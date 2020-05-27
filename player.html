@@ -1,0 +1,45 @@
+<html>
+    <head>
+        <title>Test</title>
+    </head>
+    <body>
+
+<script src = "https://embed.twitch.tv/embed/v1.js"></script>
+<div id="player"></div>
+<script type="text/javascript">
+var options = {
+    allowfullscreen: false,
+    layout: 'video',
+    width: '100%',
+    height: '80%',
+    channel: "nasa",
+    parent: [""],
+};
+const embed = new Twitch.Embed("player", options);
+embed.addEventListener(Twitch.Embed.VIDEO_READY, () => {
+  var player = embed.getPlayer();
+  player.setVolume(1.0);
+  player.setMuted(false);
+  player.setQuality("high");
+});
+
+console.debug(window.top.location)
+
+try {
+    window.webkit.messageHandlers.callback.postMessage("from js")
+} catch (e) {
+    console.error(e)
+}
+
+function appCallback() {
+    console.error("Called!")
+    window.webkit.messageHandlers.callback.postMessage("app callback hit")
+}
+
+const changeChannel = (name) => {
+    console.debug("Change channel", name)
+    embed.getPlayer().setChannel(name)
+}
+</script>
+    </body>
+</html>
