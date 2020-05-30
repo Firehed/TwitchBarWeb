@@ -14,14 +14,30 @@
       }
 
       function appCallback() {
-        console.error("Called!")
+        console.debug("Called!")
         window.webkit.messageHandlers.callback.postMessage("app callback hit")
       }
 
+      // Hold a single instance of the twitch player
+      let player = null
+
       const changeChannel = (name) => {
         console.debug("Change channel", name)
-        embed.getPlayer().setChannel(name)
+        // empty the div first?
+        if (player === null) {
+          player = new Twitch.Player("player", makeOptions(name))
+        } else {
+          player.setChannel(name)
+        }
+
       }
+
+      const makeOptions = (name) => ({
+        width: "80%",
+        height: "80%",
+        channel: name,
+        parent: [window.top.location.host],
+      });
     </script>
   </body>
 </html>
