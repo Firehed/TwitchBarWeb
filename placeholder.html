@@ -1,0 +1,27 @@
+<html>
+  <head>
+    <title>Test</title>
+  </head>
+  <body>
+    <script src="https://player.twitch.tv/js/embed/v1.js"></script>
+    <div id="player"></div>
+    <script type="text/javascript">
+      console.debug(window.top.location)
+      try {
+        window.webkit.messageHandlers.callback.postMessage("from js")
+      } catch (e) {
+        console.error(e)
+      }
+
+      function appCallback() {
+        console.error("Called!")
+        window.webkit.messageHandlers.callback.postMessage("app callback hit")
+      }
+
+      const changeChannel = (name) => {
+        console.debug("Change channel", name)
+        embed.getPlayer().setChannel(name)
+      }
+    </script>
+  </body>
+</html>
